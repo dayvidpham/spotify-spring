@@ -8,8 +8,13 @@
     flake-utils.lib.eachDefaultSystem (system:
     let
         pkgs = nixpkgs.legacyPackages.${system};
+        java = pkgs.jdk21_headless;
+        # idea = pkgs.callPackage pkgs.jetbrains.idea-community { jdk = java; };
+        idea =  pkgs.jetbrains.idea-community;
         nativeBuildInputs = with pkgs; [
-          jetbrains.idea-community
+          idea
+          java
+          maven
         ];
     in {
         devShells.default = pkgs.mkShell {
