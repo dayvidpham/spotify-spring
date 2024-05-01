@@ -25,6 +25,7 @@
         env = {
             PGDATA = "./pg";
             PGHOST = "localhost";
+            PGPORT = "5555";
         };
     in {
         devShells.default = pkgs.mkShell {
@@ -58,9 +59,6 @@
             shellHook = ''
                 echo "Using ${postgres.name}."
 
-                # Setup: other env variables
-                export PGHOST=$PGDATA
-
                 # Setup: DB
                 if [ ! -d $PGDATA ]
                 then
@@ -68,7 +66,7 @@
                     cat "$postgresConf" >> $PGDATA/postgresql.conf
                 fi
 
-                pg_ctl -o "-p 5555 -k ./" start
+                pg_ctl -o "-k ./" start
 
                 # Convenience aliases
                 alias fin="pg_ctl stop && exit"
